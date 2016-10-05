@@ -23,11 +23,26 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        div = doc.createElement('div'), // create a div for adding the canvas to
+        divOver = doc.createElement('div'), //create a div inside the container
+        h1 = doc.createElement('h1'),
+        p = doc.createElement('p'),
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+
+    div.setAttribute("id", "container"); // set the id to container div
+    doc.body.appendChild(div);
+
+    divOver.appendChild(h1);
+    h1.textContent = "Congratulations!!";
+    divOver.setAttribute("class", "over");
+
+    div.appendChild(divOver);
+    divOver.appendChild(p);
+
+    div.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -171,7 +186,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-horn-girl.png'
     ]);
     Resources.onReady(init);
 

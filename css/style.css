@@ -1,3 +1,23 @@
 body {
     text-align: center;
+    font-family: 'Verdana, helvetica, sans-serif';
+    font-size: 16px;
+}
+
+#container {
+    position: relative;
+    width: 505px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 30px;
+}
+
+.over {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    width: 505px;
+    height: 606px;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.8);
 }
