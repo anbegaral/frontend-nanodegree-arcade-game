@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="select">
+        <span>Please, select your character:<br>
+        <input type="image" src="images/char-boy.png" value="images/char-boy.png" onclick="creatingPlayer(this.value)" /></span>
+        <input type="image" src="images/char-cat-girl.png" value="images/char-cat-girl.png" onclick="creatingPlayer(this.value)" /></span>
+        <input type="image" src="images/char-pink-girl.png" value="images/char-pink-girl.png" onclick="creatingPlayer(this.value)" /></span>
+        <input type="image" src="images/char-horn-girl.png" value="images/char-horn-girl.png" onclick="creatingPlayer(this.value)" /></span>
+        <input type="image" src="images/char-princess-girl.png" value="images/char-princess-girl.png" onclick="creatingPlayer(this.value)" /></span>
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

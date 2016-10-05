@@ -33,8 +33,8 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(){
-    this.sprite = 'images/char-horn-girl.png';
+var Player = function(character){
+    this.sprite = character;
     this.x = 205;
     this.y = 460;
     this.width = 90;
@@ -57,7 +57,7 @@ Player.prototype.update = function(){
     // if the position is over the water the divOver is displayed and the keyup eventListener removed
     if(this.y === 45){
         document.querySelector(".over").style.display = "block";
-        document.querySelector('p').innerText = "You did it in "+ count +" jumps!!!! \nPress F5 to refresh the page and play again.";
+        document.querySelector('p').innerText = "You did it in "+ count +" jumps! \nPress F5 to refresh the page and play again.";
         document.removeEventListener('keyup', addingListener);
     }
 }
@@ -95,9 +95,14 @@ Player.prototype.handleInput = function(key){
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(0), new Enemy(85), new Enemy(167)];
-var player = new Player();
+var allEnemies = [new Enemy(0), new Enemy(85), new Enemy(167), new Enemy(0), new Enemy(85), new Enemy(167)];
+var player = new Player("images/char-boy.png");
 var count = 0;
+
+// create the player with the selected character
+var creatingPlayer = function(character){
+    player = new Player(character);
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
