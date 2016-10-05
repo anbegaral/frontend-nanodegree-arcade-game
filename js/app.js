@@ -54,7 +54,7 @@ Player.prototype.update = function(){
                 this.startPoint();
         }
     }
-    // if the position is over the water the divOver is displayed and the keyup event removed
+    // if the position is over the water the divOver is displayed and the keyup eventListener removed
     if(this.y === 45){
         document.querySelector(".over").style.display = "block";
         document.querySelector('p').innerText = "You did it in "+ count +" jumps!!!! \nPress F5 to refresh the page and play again.";
@@ -74,7 +74,7 @@ Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Receives the keys pressed and handles the player's movements on the board
+// Receives the pressed keys and handles the player's movements on the board
 // taking into account the limits
 Player.prototype.handleInput = function(key){
     if(key === "right" && this.x < 405){ //405 is the most right position on the board
@@ -83,7 +83,7 @@ Player.prototype.handleInput = function(key){
     }else if(key === "left" && this.x > 5){//5 is the most left position on the board
         this.x -= this.jumpX;
         count++;
-    }else if(key === "up" && this.y > 45){//45 is the highesst position on the board
+    }else if(key === "up" && this.y > 45){//45 is the highest position on the board
         this.y -= this.jumpY;
         count++;
     }else if(key === "down" && this.y < 460){//460 is the lowest position on the board
