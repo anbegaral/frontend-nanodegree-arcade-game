@@ -1,4 +1,6 @@
-// Enemies our player must avoid
+/*
+ * Enemies our player must avoid
+*/
 var Enemy = function(height) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -15,26 +17,32 @@ var Enemy = function(height) {
     this.height = 75;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/*
+ * Update the enemy's position, required method for game
+ * @param dt, a time delta between ticks
+*/
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.jumpX * dt;
+    //return the enemy to the start point
     if(this.x > ctx.canvas.width){
         this.x = -101;
     }
 };
 
-// Draw the enemy on the screen, required method for game
+/*
+ * Draw the enemy on the screen, required method for game
+*/
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/*
+ * Player object
+ * @param {string} character create the player with the selected picture
+*/
 var Player = function(character){
     this.sprite = character;
     this.x = 205;
@@ -43,10 +51,11 @@ var Player = function(character){
     this.height = 85;
     this.jumpX = 100;
     this.jumpY = 83;
-}
+};
 
-// Manages the cases that the player collides against the enemies
-// and the water reached
+/*
+ * Manages the cases that the player collides against the enemies and the water reached
+*/
 Player.prototype.update = function(){
     for(var i = 0; i < allEnemies.length; i++){
         if(this.x < allEnemies[i].x + allEnemies[i].width &&
@@ -56,20 +65,24 @@ Player.prototype.update = function(){
                 this.startPoint();
         }
     }
+
     // if the position is over the water the divOver is displayed and the keyup eventListener removed
     if(this.y === 45){
         document.querySelector(".over").style.display = "block";
         document.querySelector("h1").textContent = "Congratulations!";
-        document.querySelector('p').innerText = "You did it in "+ count +" jumps! \nPress F5 to refresh the page and play again.";
+        document.querySelector('p').innerText = "You did it in "+ count +" jumps and got "+ countGems +" gems! \nPress F5 to refresh the page and play again.";
         document.removeEventListener('keyup', addingListener);
     }
-}
+};
 
-// Resets the player at the start point and the count of jumps
+/*
+ * Resets the player at the start point and the count of jumps and reset the gems
+*/
 Player.prototype.startPoint = function(){
     this.x = 205;
     this.y = 460;
     count = 0;
+    resetGems();
     //The lifes are handled when the player is reset
     lifes--;
     document.querySelector("#life" + lifes).remove();
@@ -78,15 +91,19 @@ Player.prototype.startPoint = function(){
         document.querySelector("h1").textContent = "Sorry!";
         document.querySelector('p').innerText = "Game over\nPress F5 to refresh the page and play again.";
     }
-}
+};
 
-// Renders the player on the game
+/*
+ *  Renders the player on the game
+*/
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
-// Receives the pressed keys and handles the player's movements on the board
-// taking into account the limits
+/*
+ * Receives the pressed keys and handles the player's movements on the board
+ * taking into account the limits
+*/
 Player.prototype.handleInput = function(key){
     if(key === "right" && this.x < 405){ //405 is the most right position on the board
         this.x += this.jumpX;
@@ -101,34 +118,100 @@ Player.prototype.handleInput = function(key){
         this.y += this.jumpY;
         count++;
     }
-}
+};
 
+/*
+ * Gem object
+ * @param {string} color
+ * @param {number} x
+ * @param {number} y
+*/
 var Gem = function(color, x, y){
     this.sprite = "images/Gem "+ color + ".png";
-    this.x = x;
-    this.y = y;
+    this.x = 25 + (100 * x); // 25 to center the gem horizontally, 100*x gives the number of column
+    this.y = 140 +(83 * y);// 140 to avoid the water and center the gem vertically, 83*y gives the number of row
+    this.width = 50;
+    this.height = 60;
+};
+
+/*
+ * Gives a random number between the given values
+ * Used to give the random position of the gems on the board, x=columns, y=rows
+ * @param {number} min
+ * @param {number} max
+*/
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/*
+ * Render the Gem objects
+*/
 Gem.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = [new Enemy(0), new Enemy(85), new Enemy(167), new Enemy(0), new Enemy(85), new Enemy(167)];
+/*
+ * Checks if the player collides the gems, if so, deletes the gem and refreshes the gems count and writes it on screen
+*/
+Gem.prototype.update = function(){
+    //if the player collides the gems
+    for(var z = 0; z < gemList.length; z++){
+        if(player.x < gemList[z].x + gemList[z].width &&
+            player.x + player.width > gemList[z].x &&
+            player.y < gemList[z].y + gemList[z].height &&
+            player.height + player.y > gemList[z].y){
+                //delete the gem from the board and the array
+                ctx.clearRect(gemList[z].x, gemList[z].y, gemList[z].width, gemList[z].height);
+                gemList.splice(z, 1);
+                countGems++;
+        }
+    }
+    document.querySelector('#gems').textContent = "Gems: " + countGems;
+};
+
+/*
+ * Resets the gems count and objects
+*/
+var resetGems = function(){
+    countGems = 0;
+    gemList = [new Gem("Blue", getRandomInt(0, 4), getRandomInt(0, 2)),
+        new Gem("Green", getRandomInt(0, 4), getRandomInt(0, 2)),
+        new Gem("Orange", getRandomInt(0, 4), getRandomInt(0, 2)),
+        new Gem("Blue", getRandomInt(0, 4), getRandomInt(0, 2)),
+        new Gem("Green", getRandomInt(0, 4), getRandomInt(0, 2))];
+};
+
+/*
+ * Instantiate the objects.
+ * Place all enemy objects in an array called allEnemies
+ * Place the player object in a variable called player
+ * Declare the count of jumps
+ * Declare the number of lifes
+ * Declare the number of gems
+*/
+var allEnemies = [new Enemy(0), new Enemy(85), new Enemy(167)];//, new Enemy(0), new Enemy(85), new Enemy(167)];
 var player = new Player("images/char-boy.png");
-var gemList = [new Gem("Blue", 85, 85), new Gem("Green", 85, 167), new Gem("Orange", 205, 85)];
+var gemList = [new Gem("Blue", getRandomInt(0, 4), getRandomInt(0, 2)),
+    new Gem("Green", getRandomInt(0, 4), getRandomInt(0, 2)),
+    new Gem("Orange", getRandomInt(0, 4), getRandomInt(0, 2)),
+    new Gem("Blue", getRandomInt(0, 4), getRandomInt(0, 2)),
+    new Gem("Green", getRandomInt(0, 4), getRandomInt(0, 2))];
 var count = 0;
 var lifes = 3;
+var countGems = 0;
 
-// create the player with the selected character
+/*
+ * Create the player with the selected character
+ * @param {string} character
+*/
 var creatingPlayer = function(character){
     player = new Player(character);
-}
+};
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+/*
+ * This listens for key presses and sends the keys to Player.handleInput() method.
+*/
 var addingListener = function(e) {
     var allowedKeys = {
         37: 'left',
@@ -139,5 +222,7 @@ var addingListener = function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 };
 
-// Using a named function to be able to remove the listener when the user wins the game
+/*
+ * Using a named function to be able to remove the listener when the user wins the game
+*/
 document.addEventListener('keyup', addingListener);
