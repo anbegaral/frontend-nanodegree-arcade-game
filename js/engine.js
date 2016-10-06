@@ -36,7 +36,6 @@ var Engine = (function(global) {
     doc.body.appendChild(div);
 
     divOver.appendChild(h1);
-    h1.textContent = "Congratulations!!";
     divOver.setAttribute("class", "over");
 
     div.appendChild(divOver);
@@ -167,6 +166,11 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        /*gemList.forEach(function(gem){
+            gem.render()
+        });*/
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -185,6 +189,9 @@ var Engine = (function(global) {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/char-pink-girl.png',
