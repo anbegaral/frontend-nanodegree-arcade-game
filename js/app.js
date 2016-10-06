@@ -9,6 +9,8 @@ var Enemy = function(height) {
     this.x = -101; //101 is the width of the png
     this.y = 132 + height; // the height is given to match on the path
     this.jumpX = Math.random() * 200; // a random number for the speed
+
+    //values to calculate the collisions
     this.width = 90;
     this.height = 75;
 };
@@ -57,6 +59,7 @@ Player.prototype.update = function(){
     // if the position is over the water the divOver is displayed and the keyup eventListener removed
     if(this.y === 45){
         document.querySelector(".over").style.display = "block";
+        document.querySelector("h1").textContent = "Congratulations!";
         document.querySelector('p').innerText = "You did it in "+ count +" jumps! \nPress F5 to refresh the page and play again.";
         document.removeEventListener('keyup', addingListener);
     }
@@ -67,6 +70,14 @@ Player.prototype.startPoint = function(){
     this.x = 205;
     this.y = 460;
     count = 0;
+    //The lifes are handled when the player is reset
+    lifes--;
+    document.querySelector("#life" + lifes).remove();
+    if (lifes === 0) {
+        document.querySelector(".over").style.display = "block";
+        document.querySelector("h1").textContent = "Sorry!";
+        document.querySelector('p').innerText = "Game over\nPress F5 to refresh the page and play again.";
+    }
 }
 
 // Renders the player on the game
@@ -92,12 +103,24 @@ Player.prototype.handleInput = function(key){
     }
 }
 
+var Gem = function(color, x, y){
+    this.sprite = "images/Gem "+ color + ".png";
+    this.x = x;
+    this.y = y;
+}
+
+Gem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(0), new Enemy(85), new Enemy(167), new Enemy(0), new Enemy(85), new Enemy(167)];
 var player = new Player("images/char-boy.png");
+var gemList = [new Gem("Blue", 85, 85), new Gem("Green", 85, 167), new Gem("Orange", 205, 85)];
 var count = 0;
+var lifes = 3;
 
 // create the player with the selected character
 var creatingPlayer = function(character){

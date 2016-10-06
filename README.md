@@ -7,6 +7,8 @@ This project has been developed as an exercise for **Udacity Front End Nanodegre
 The goal of the player is to reach the water, without colliding into any one of the enemies. The enemies move in varying speeds on the paved block portion of the scene. Once a the player collides with an enemy, the game is reset and the player moves back to the start square. Once the player reaches the water the game is won.
 
 ## Usage
+The user can select the character to play clicking over the pictures. The player has got **three lifes** to play, when the character collides with the bug one life is lost. When the player run out of lifes the game is over.
+
 The player can move:
 - **left**: left arrow,
 - **right**: right arrow,
